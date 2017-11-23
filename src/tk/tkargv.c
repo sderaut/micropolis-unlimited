@@ -178,7 +178,9 @@ Tk_ParseArgv(interp, tkwin, argcPtr, argv, argTable, flags)
 	infoPtr = matchPtr;
 	switch (infoPtr->type) {
 	    case TK_ARGV_CONSTANT:
-		*((int *) infoPtr->dst) = (int) infoPtr->src;
+		/* sde avoid cast from pointer to different size int */
+		/* *((int *) infoPtr->dst) = (int) infoPtr->src; */
+		*((char **) infoPtr->dst) = (char *) (infoPtr->src);
 		break;
 	    case TK_ARGV_INT:
 		if (argc == 0) {

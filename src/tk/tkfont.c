@@ -228,7 +228,8 @@ Tk_NameOfFontStruct(fontStructPtr)
 
     if (!initialized) {
 	printid:
-	sprintf(string, "font id 0x%x", fontStructPtr->fid);
+	/* sde changed x to lx */
+	sprintf(string, "font id 0x%lx", fontStructPtr->fid);
 	return string;
     }
     fontHashPtr = Tcl_FindHashEntry(&fontTable, (char *) fontStructPtr);

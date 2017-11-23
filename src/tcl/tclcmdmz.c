@@ -162,7 +162,8 @@ Tcl_RegexpCmd(dummy, interp, argc, argv)
 	    }
 	} else {
 	    if (indices) {
-		sprintf(info, "%d %d", regexpPtr->startp[i] - string,
+		/* sde added 'l' to format specifiers */
+		sprintf(info, "%ld %ld", regexpPtr->startp[i] - string,
 			regexpPtr->endp[i] - string - 1);
 		result = Tcl_SetVar(interp, argPtr[i+2], info, 0);
 	    } else {
@@ -929,7 +930,8 @@ Tcl_StringCmd(dummy, interp, argc, argv)
 		    " length string\"", (char *) NULL);
 	    return TCL_ERROR;
 	}
-	sprintf(interp->result, "%d", strlen(argv[2]));
+	/* sde added 'z' to format specifier */
+	sprintf(interp->result, "%zd", strlen(argv[2]));
 	return TCL_OK;
     } else if ((c == 'm') && (strncmp(argv[1], "match", length) == 0)) {
 	if (argc != 4) {

@@ -55,7 +55,8 @@ TkDisplay *tkDisplayList = NULL;
  * Have statics in this module been initialized?
  */
 
-static initialized = 0;
+/* sde add int */
+static int initialized = 0;
 
 /*
  * Context information used to map from X window id's to
@@ -610,10 +611,11 @@ Tk_CreateMainWindow(interp, screenName, baseName)
     if (result == TCL_OK) {
 	winPtr->nameUid = Tk_GetUid(baseName);
     } else {
+        /* sde size 110 gave compiler warning before limit on i */
 	char newName[110];
 	int i;
-
-	for (i = 2; ; i++) {
+        /* sde insert limit i <= amount when loop should not continue */
+	for (i = 2; i <= 100; i++) {
 	    sprintf(newName, "%.100s #%d", baseName, i);
 	    Tcl_SetResult(interp, (char *) NULL, TCL_STATIC);
 	    result = Tk_RegisterInterp(interp, newName, tkwin);

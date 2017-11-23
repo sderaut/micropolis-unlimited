@@ -267,6 +267,21 @@ set EventLines 5
 set screenwidth [winfo screenwidth .]
 set screenheight [winfo screenheight .]
 
+# sde add this for debugging output
+puts stdout "micropolis.tcl screenwidth: " nonewline
+puts stdout $screenwidth nonewline
+puts stdout "  screenheight: " nonewline
+puts stdout $screenheight
+
+if {$screenwidth < $ScenarioPanelWidth} {
+    puts stdout "width too narrow"
+}
+
+if {$screenheight < $ScenarioPanelHeight} {
+    puts stdout "height too short"
+}
+
+# sde add `|| 1` to force resized version
 if {($screenwidth < $ScenarioPanelWidth) ||
     ($screenheight < $ScenarioPanelHeight)} {
 	puts stdout "Screen too small for normal scenario window, using resized version.\n"

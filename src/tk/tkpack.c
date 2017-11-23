@@ -95,7 +95,8 @@ static Tcl_HashTable packerHashTable;
  * Have statics in this module been initialized?
  */
 
-static initialized = 0;
+/* sde added int */
+static int initialized = 0;
 
 /*
  * Forward declarations for procedures defined later in this file:

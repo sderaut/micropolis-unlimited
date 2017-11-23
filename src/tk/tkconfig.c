@@ -803,7 +803,8 @@ FormatConfigInfo(tkwin, specPtr, widgRec)
 	    argv[4] = buffer;
 	    break;
 	case TK_CONFIG_MM:
-	    sprintf(buffer, "%gm", *((int *) ptr));
+	    /* sde added cast to double */
+	    sprintf(buffer, "%gm", (double) *((int *) ptr));
 	    argv[4] = buffer;
 	    break;
 	case TK_CONFIG_WINDOW: {

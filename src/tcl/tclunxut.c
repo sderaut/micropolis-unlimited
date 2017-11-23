@@ -578,7 +578,13 @@ Tcl_CreatePipeline(interp, argc, argv, pidArrayPtr, inPipePtr,
 	    int length;
 
 	    strcpy(inName, TMP_STDIN_NAME);
-	    mkstemp(inName);
+	    /* sde added if + error msg to use return value of mkstemp */
+	    if (mkstemp(inName) == -1) {
+		Tcl_AppendResult(interp,
+			"couldn't create temporary file for command: ",
+			Tcl_UnixError(interp), (char *) NULL);
+		goto error;
+	    }
 	    inputId = open(inName, O_RDWR|O_CREAT|O_TRUNC, 0600);
 	    if (inputId < 0) {
 		Tcl_AppendResult(interp,
@@ -675,7 +681,13 @@ Tcl_CreatePipeline(interp, argc, argv, pidArrayPtr, inPipePtr,
 	char errName[sizeof(TMP_STDERR_NAME) + 1];
 
 	strcpy(errName, TMP_STDERR_NAME);
-	mkstemp(errName);
+	/* sde added if + error msg to use return value of mkstemp */
+	if (mkstemp(errName) == -1) {
+	    Tcl_AppendResult(interp,
+		    "couldn't create temporary file for command: ",
+		    Tcl_UnixError(interp), (char *) NULL);
+	    goto error;
+	}
 	errorId = open(errName, O_WRONLY|O_CREAT|O_TRUNC, 0600);
 	if (errorId < 0) {
 	    errFileError:
@@ -737,7 +749,9 @@ Tcl_CreatePipeline(interp, argc, argv, pidArrayPtr, inPipePtr,
 		    || ((errorId != -1) && (dup2(errorId, 2) == -1))) {
 		char *err;
 		err = "forked process couldn't set up input/output\n";
-		write(errorId < 0 ? 2 : errorId, err, strlen(err));
+		/* sde used return value of write */
+		if (write(errorId < 0 ? 2 : errorId, err, strlen(err)) == -1)
+		    _exit(errno);
 		_exit(1);
 	    }
 	    for (i = 3; (i <= outputId) || (i <= inputId) || (i <= errorId);
@@ -747,7 +761,9 @@ Tcl_CreatePipeline(interp, argc, argv, pidArrayPtr, inPipePtr,
 	    execvp(execName, &argv[firstArg]);
 	    sprintf(errSpace, "couldn't find \"%.150s\" to execute\n",
 		    argv[firstArg]);
-	    write(2, errSpace, strlen(errSpace));
+	    /* sde used return value of write */
+	    if (write(2, errSpace, strlen(errSpace)) == -1)
+		_exit(errno);
 	    _exit(1);
 	} else {
 	    pidPtr[numPids] = pid;

@@ -90,8 +90,8 @@ Tcl_ClengthCmd (clientData, interp, argc, argv)
                           (char *) NULL);
         return TCL_ERROR;
     }
-
-    sprintf (interp->result, "%d", strlen (argv[1]));
+    /* sde change d to lu */
+    sprintf (interp->result, "%lu", strlen (argv[1]));
     return TCL_OK;
 
 } /* Tcl_ClengthCmd */

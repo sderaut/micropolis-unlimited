@@ -195,12 +195,13 @@ void
 sim_srandom(x)
 	unsigned int x;
 {
-	register int i, j;
+	/* sde comment out unused j */
+	register int i; /* , j; */
 
 	if (rand_type == TYPE_0)
 		state[0] = x;
 	else {
-		j = 1;
+		/* sde comment out */ /* j = 1; */
 		state[0] = x;
 		for (i = 1; i < rand_deg; i++)
 			state[i] = 1103515245 * state[i - 1] + 12345;

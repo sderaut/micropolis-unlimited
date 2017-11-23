@@ -545,7 +545,8 @@ Tk_WinfoCmd(clientData, interp, argc, argv)
 		    argv[0], " atom name\"", (char *) NULL);
 	    return TCL_ERROR;
 	}
-	sprintf(interp->result, "%d", Tk_InternAtom(tkwin, argv[2]));
+	/* sde changed d to lu */
+	sprintf(interp->result, "%lu", Tk_InternAtom(tkwin, argv[2]));
     } else if ((c == 'a') && (strncmp(argv[1], "atomname", length) == 0)
 	    && (length >= 5)) {
 	Atom atom;
@@ -628,7 +629,8 @@ Tk_WinfoCmd(clientData, interp, argc, argv)
 	sprintf(interp->result, "%d", Tk_Height(window));
     } else if ((c == 'i') && (strcmp(argv[1], "id") == 0)) {
 	SETUP("id");
-	sprintf(interp->result, "0x%x", Tk_WindowId(window));
+	/* sde changed 'x' to 'lx' */
+	sprintf(interp->result, "0x%lx", Tk_WindowId(window));
     } else if ((c == 'i') && (strncmp(argv[1], "interps", length) == 0)
 	    && (length >= 2)) {
 	if (argc != 2) {

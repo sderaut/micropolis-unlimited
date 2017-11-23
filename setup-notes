@@ -1,0 +1,92 @@
+2017 11 10
+
+1.
+downloaded TCL/Tk Linux source from original Micropolis release
+http://www.donhopkins.com/home/micropolis/
+
+extracted contents /micropolis-activity to ~/Projects/C/micropolis-activity
+
+2.
+comment in makefile in /src shows "make xo" is the command to build the binary
+
+3.
+C compile error required installing libxpm-dev
+
+4.
+bash error requires installing yacc (for command "yacc tclxgdat.y")
+
+installing bison (for yacc) gives syntax error on "=" in that command
+
+that's an obsolete feature of yacc, to use "=" in defintions
+change in config.mk
+
+from:
+YACC=yacc
+#YACC=bison -b y
+
+to:
+#YACC=yacc #sde yacc wrapper not backward compatible as of Bison 3.0.4
+YACC=bison -b -y
+
+to:
+YACC=yacc -y
+#YACC=bison -b -y
+
+5. C compile error
+tclxgdat.y:232:1: error: static declaration of ‘yylex’ follows non-static declaration
+
+add lines to tclxgdat.y:
+
+/* sde add prototype for function yylex */
+static yylex();
+
+6. stiil C compile errors, not ready for 64-bit
+
+use different version with patches from
+http://git.zerfleddert.de/cgi-bin/gitweb.cgi/micropolis
+
+runs as ./Micropolis
+
+7. capture build messages to fix
+
+generate new file "src/build.txt" by:
+
+make install 2>&1 | tee build.txt
+
+8. fixed tcl and tk C source compile warnings
+   (about 75 warnings)
+
+9. fixed yacc shift/reduce compile warning
+
+10. on upgrade from Ubuntu 17.04 to 17.10, new gcc compiler warnings
+    involving size of string copies are emitted (gcc 7.2.0)
+    (5 warnings)
+
+11. tried X11 to Xft example program in C (see xft_hello)
+    a lot of work to rewrite even a very simple window example
+    from X11 to Xft for the same behavior and font, plus antialiasing
+
+12. found buggy interaction with Lubuntu desktop mute control
+    (doesn't mute sound, although Alsa and other mute controls do)
+
+13. fixed new compiler warnings (2 involving size of string buffers,
+    and 3 uses of '\0' as a synonym of NULL when not a character dereference)
+    (turned those into tests of both: NULL || deref to '\0')
+
+14. experimenting with higher warning level hw2 where CFLAGS is defined
+      for the micropolis specific C code
+    produces tons of warnings, such as discarding const
+    experimenting with adding const to some string members of a struct in tk.h
+    which creates some new discard const warnings when those members are
+      passed to some tk functions
+    (probably since Tcl is a scripting language, the warnings being pushed
+     around can go on, to a point where some function that does
+     have to change its string argument would be called)
+          (but if that's the case, then wouldn't that prove that Tcl is
+           unsound, because it would mean that some user code could result
+           in trying to write to a C const string? so maybe it's possible
+           to make the C code const-correct, without changing Tcl abilities)
+
+    (probably higher warnings should be added one flag at a time,
+     so that there are fewer to deal with at a time)
+

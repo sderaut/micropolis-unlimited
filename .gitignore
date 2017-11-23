@@ -20,3 +20,4 @@ src/sim/sim
 __init__.py
 *.bak
 [A-Z]*.cty
+build*.txt

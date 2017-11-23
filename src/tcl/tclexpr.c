@@ -22,6 +22,13 @@ static char rcsid[] = "$Header: /user6/ouster/tcl/RCS/tclExpr.c,v 1.35 92/03/23 
 #endif
 
 #include "tclint.h"
+/* sde added prototype for otherwise implicit function Tcl_ReturnDouble
+ * that has a call inserted in the sed modified version of this file */
+/* #include "tclxint.h" */ /* sde in /src/tclx/src which is not on path */
+/* sde added extern */
+extern int
+Tcl_ReturnDouble _ANSI_ARGS_((Tcl_Interp *interp,
+                              double      number));
 
 /*
  * The stuff below is a bit of a workaround so that this file can be used

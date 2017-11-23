@@ -50,7 +50,12 @@
 #else
 	static time_t timeconv();
 	static time_t daylcorr();
-	static lookup();
+	/* sde added int */
+	static int lookup(char *id);
+	/* sde added prototype yylex */
+	int yylex();
+	/* sde added prototype yyerror */
+	int yyerror(const char *msg);
 #endif
 
 #define AM 1
@@ -59,6 +64,12 @@
 #define STANDARD 2
 #define MAYBE    3
 %}
+
+/* sde rules to clear up 8 shift/reduce conflicts */
+
+%left LOWER_THAN_NUMBER
+%left NUMBER
+%left DAY MONTH UNIT MUNIT SUNIT
 
 %%
 timedate:               /* empty */
@@ -80,20 +91,20 @@ nspec:  NUMBER
                 {if (timeflag && dateflag && !relflag) year = $1;
                 else {timeflag++;hh = $1/100;mm = $1%100;ss = 0;merid = 24;}};
 
-tspec:  NUMBER MERIDIAN
+tspec:  NUMBER MERIDIAN %prec LOWER_THAN_NUMBER
                 {hh = $1; mm = 0; ss = 0; merid = $2;}
-        | NUMBER ':' NUMBER
+        | NUMBER ':' NUMBER %prec LOWER_THAN_NUMBER
                 {hh = $1; mm = $3; merid = 24;}
-        | NUMBER ':' NUMBER MERIDIAN
+        | NUMBER ':' NUMBER MERIDIAN %prec LOWER_THAN_NUMBER
                 {hh = $1; mm = $3; merid = $4;}
-        | NUMBER ':' NUMBER NUMBER
+        | NUMBER ':' NUMBER NUMBER %prec LOWER_THAN_NUMBER
                 {hh = $1; mm = $3; merid = 24;
                 dayLight = STANDARD; ourzone = -($4%100 + 60*$4/100);}
-        | NUMBER ':' NUMBER ':' NUMBER
+        | NUMBER ':' NUMBER ':' NUMBER %prec LOWER_THAN_NUMBER
                 {hh = $1; mm = $3; ss = $5; merid = 24;}
-        | NUMBER ':' NUMBER ':' NUMBER MERIDIAN
+        | NUMBER ':' NUMBER ':' NUMBER MERIDIAN %prec LOWER_THAN_NUMBER
                 {hh = $1; mm = $3; ss = $5; merid = $6;}
-        | NUMBER ':' NUMBER ':' NUMBER NUMBER
+        | NUMBER ':' NUMBER ':' NUMBER NUMBER %prec LOWER_THAN_NUMBER
                 {hh = $1; mm = $3; ss = $5; merid = 24;
                 dayLight = STANDARD; ourzone = -($6%100 + 60*$6/100);};
 
@@ -109,17 +120,17 @@ dyspec: DAY
         | NUMBER DAY
                 {dayord = $1; dayreq = $2;};
 
-dtspec: NUMBER '/' NUMBER
+dtspec: NUMBER '/' NUMBER %prec LOWER_THAN_NUMBER
                 {month = $1; day = $3;}
-        | NUMBER '/' NUMBER '/' NUMBER
+        | NUMBER '/' NUMBER '/' NUMBER %prec LOWER_THAN_NUMBER
                 {month = $1; day = $3; year = $5;}
-        | MONTH NUMBER
+        | MONTH NUMBER %prec LOWER_THAN_NUMBER
                 {month = $1; day = $2;}
-        | MONTH NUMBER ',' NUMBER
+        | MONTH NUMBER ',' NUMBER %prec LOWER_THAN_NUMBER
                 {month = $1; day = $2; year = $4;}
-        | NUMBER MONTH
+        | NUMBER MONTH %prec LOWER_THAN_NUMBER
                 {month = $2; day = $1;}
-        | NUMBER MONTH NUMBER
+        | NUMBER MONTH NUMBER %prec LOWER_THAN_NUMBER
                 {month = $2; day = $1; year = $3;};
 
 
@@ -228,8 +239,9 @@ time_t daylcorr(future, now) time_t future, now;
 
 static char *lptr;
 
+/* sde added int [static was already C99 style commented out] */
 //static
-yylex()
+int yylex()
 {
 #ifndef YYSTYPE
 //#define YYSTYPE extern int
@@ -458,8 +470,9 @@ struct table milzone[] = {
         {"z", ZONE, 0 HRS},
         {0, 0, 0}};
 
+/* sde added int */
 static
-lookup(id) char *id;
+int lookup(id) char *id;
 {
 #define gotit (yylval=i->value,  i->type)
 #define getid for(j=idvar, k=id; *j++ = *k++; )
@@ -584,4 +597,5 @@ int
 yyerror(msg)
     const char *msg;
 {
+    return 0;
 }

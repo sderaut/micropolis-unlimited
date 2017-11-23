@@ -1908,7 +1908,8 @@ ActivatePieMenuEntry(menuPtr, index, preview)
 static int
 CalcPieMenuItem(PieMenu *menu, int x, int y)
 {
-  register PieMenuEntry *it, *last_it;
+  /* sde comment out unused last_it */
+  register PieMenuEntry *it; /* , *last_it; */
   int i, order = 0, quadrant;
   int numerator, denominator;
   int first, last_i, last_order;
@@ -2048,7 +2049,7 @@ case 3: /*
      * Remember this menu item index, and move on to the next one
      * counter-clockwise around the circle.
      */
-    last_i = i; last_it = it;
+    last_i = i; /* sde comment out */ /* last_it = it; */
     if (++i >= menu->numEntries) {
       i = 0;
     }
