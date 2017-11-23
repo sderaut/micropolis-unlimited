@@ -1,0 +1,46 @@
+SDLINCLUDE="`pkg-config --cflags sdl 2>/dev/null`"
+SDLLIBS="`pkg-config --libs-only-L sdl 2>/dev/null` `pkg-config --libs-only-l sdl 2>/dev/null`"
+
+found=0
+
+if echo '#include <SDL_mixer.h>'|(cpp ${SDLINCLUDE}) >/dev/null 2>&1; then
+	found=1
+else
+	for flag in ${SDLINCLUDE}; do
+		if echo "${flag}" | grep '^-I' >/dev/null 2>&1; then
+			sdlpath="$(echo "${flag}"| sed -e 's/^-I//')"
+			if [ -f "${sdlpath}/SDL_mixer.h" ]; then
+				found=1
+				break
+			fi
+		fi
+	done
+fi
+
+if [ "${found}" = "1" ]; then
+	SDLINCLUDE="${SDLINCLUDE} -DWITH_SDL_MIXER"
+	SDLLIBS="${SDLLIBS} -lSDL_mixer"
+else
+	found=0
+
+	for sdlpath in /usr /usr/local /opt/local /opt/csw /sw; do
+		if [ -f "${sdlpath}/include/SDL/SDL_mixer.h" ]; then
+			SDLINCLUDE="${SDLINCLUDE} -I${sdlpath}/include/SDL -DWITH_SDL_MIXER"
+			SDLLIBS="${SDLLIBS} -L${sdlpath}/lib -lSDL -lSDL_mixer"
+
+			found=1
+			break
+		fi
+	done
+
+	if [ "${found}" = "0" ]; then
+		SDLINCLUDE=""
+		SDLLIBS=""
+	fi
+fi
+
+if [ "${1}" = "cflags" ]; then
+	echo "${SDLINCLUDE}"
+elif [ "${1}" = "libs" ]; then
+	echo "${SDLLIBS}"
+fi
