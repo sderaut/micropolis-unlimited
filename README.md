@@ -1,4 +1,4 @@
-Micropolis Unlimited
+# Micropolis Unlimited
 
 — a patched version of Micropolis, an Open Source project derived from the code of the original SimCity™
 
@@ -11,7 +11,7 @@ Current changes here are for debugging, so far.
 
 ---
 
-To build and use, tested on Linux only:
+#### To build and use, tested on Linux only:
 
 1. put the contents of this repo into a directory
 
@@ -28,7 +28,7 @@ $ ./Micropolis
 
 ----
 
-Dependencies:
+#### Dependencies:
 
 The following files may be needed to build this version of Micropolis. If you try without a necessary file, a compiler error message should give a hint.
 
