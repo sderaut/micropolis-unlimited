@@ -21,6 +21,13 @@ static char rcsid[] = "$Header: /user6/ouster/tcl/RCS/tclBasic.c,v 1.131 92/06/2
 
 #include "tclint.h"
 
+/* sde added prototype for otherwise implicit function Tcl_CheckForSignal
+ * that has a call inserted in the sed modified version of this file */
+/* #include "tclxtend.h" */ /* that's in /src/tclx/src which is not on path */
+EXTERN int
+Tcl_CheckForSignal _ANSI_ARGS_((Tcl_Interp *interp,
+                                int         cmdResultCode));
+
 /*
  * The following structure defines all of the commands in the Tcl core,
  * and the C procedures that execute them.
