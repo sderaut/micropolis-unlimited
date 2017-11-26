@@ -80,7 +80,8 @@ DO_STRIPPING=false
 AR=ar
 XCFLAGS=
 XLDFLAGS=
-YACC=yacc
+# sde add -v to give verbose y.output for shift/reduce conflicts
+YACC=yacc -v
 #YACC=bison -b y
 
 #------------------------------------------------------------------------------
