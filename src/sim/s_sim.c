@@ -674,12 +674,13 @@ CollectTax(void)
 {	
   static float RLevels[3] = { 0.7, 0.9, 1.2 };
   static float FLevels[3] = { 1.4, 1.2, 0.8 };
-  short z;
+  /* sde comment out unused z */
+  /* short z; */
 
   CashFlow = 0;
   if (!TaxFlag) { /* if the Tax Port is clear  */
     /* XXX: do something with z */
-    z = AvCityTax / 48;  /* post */
+    /* z = AvCityTax / 48; */  /* post */
     AvCityTax = 0;			
     PoliceFund = PolicePop * 100;
     FireFund   = FireStPop * 100;
