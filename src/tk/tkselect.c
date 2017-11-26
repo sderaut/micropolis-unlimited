@@ -1132,7 +1132,8 @@ SelCvtFromX(propPtr, numValues, type, tkwin)
 	if (type == XA_ATOM) {
 	    strcpy(result+curSize, atomName);
 	} else {
-	    sprintf(result+curSize, "%#x", *propPtr);
+	    /* sde changed to 'lx' */
+	    sprintf(result+curSize, "%#lx", *propPtr);
 	}
 	curSize += strlen(result+curSize);
     }
@@ -1856,7 +1857,8 @@ DefaultSelection(winPtr, target, buffer, maxBytes, typePtr)
 	if (maxBytes < 20) {
 	    return -1;
 	}
-	sprintf(buffer, "%#x", winPtr->dispPtr->selectionTime);
+	/* sde changed x to lx */
+	sprintf(buffer, "%#lx", winPtr->dispPtr->selectionTime);
 	*typePtr = XA_INTEGER;
 	return strlen(buffer);
     }
