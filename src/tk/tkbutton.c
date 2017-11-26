@@ -382,8 +382,9 @@ Tk_ButtonCmd(clientData, interp, argc, argv)
 	    type = TYPE_RADIO_BUTTON;
 	    break;
 	default:
+	    /* sde added arg to show string */
 	    sprintf(interp->result,
-		    "unknown button-creation command \"%.50s\"");
+		    "unknown button-creation command \"%.50s\"", argv[0]);
 	    return TCL_ERROR;
     }
 
