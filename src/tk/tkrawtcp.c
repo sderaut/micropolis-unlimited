@@ -44,6 +44,9 @@ static char rcsid[] = "...";
 
 #include <tk.h>
 
+/* sde include to avoid implicit use of function TkBindError */
+#include "tkint.h"
+
 static int inet_connect _ANSI_ARGS_((char *host, char *port,int server));
 static int unix_connect _ANSI_ARGS_((char *path, int server));
 static void HandleSocket _ANSI_ARGS_ ((ClientData clientData, int mask));
