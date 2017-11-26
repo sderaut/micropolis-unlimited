@@ -1,11 +1,9 @@
 # Micropolis Unlimited
 
-— a patched version of Micropolis, an Open Source project derived from the code of the original SimCity™
+— a patched version of Micropolis. The Micropolis project is Free Open Source Software (FOSS) derived by permission from ancient code for a popular city simulation game whose name must not be mentioned.
 
 This project starts from 2016-03-06 patched version of Micropolis source from:
 http://git.zerfleddert.de/cgi-bin/gitweb.cgi/micropolis
-
-It already runs better than the common Micropolis original release.
 
 Current changes here are for debugging, so far.
 
