@@ -237,7 +237,8 @@ Tk_RegisterInterp(interp, name, tkwin)
 	}
 	(void) LookupName(winPtr->dispPtr, name, 1);
     }
-    sprintf(propInfo, "%x %.*s", Tk_WindowId(dispPtr->commWindow),
+    /* sde changed x to lx */
+    sprintf(propInfo, "%lx %.*s", Tk_WindowId(dispPtr->commWindow),
 	    TCL_MAX_NAME_LENGTH, name);
     XChangeProperty(dispPtr->display,
 	    Tk_DefaultRootWindow(dispPtr->display),
@@ -431,7 +432,8 @@ Tk_SendCmd(clientData, interp, argc, argv)
     } else {
 	property = (char *) ckalloc((unsigned) length);
     }
-    sprintf(property, "C %x %x %s|%s",
+    /* sde changed first x to lx */
+    sprintf(property, "C %lx %x %s|%s",
 	    Tk_WindowId(dispPtr->commWindow), serial, argv[1], cmd);
     (void) AppendPropCarefully(dispPtr->display, w, dispPtr->commProperty,
 	    property, &pending);
@@ -713,7 +715,8 @@ LookupName(dispPtr, name, delete)
 	    p++;
 	}
 	if ((*p != 0) && (strcmp(name, p+1) == 0)) {
-	    sscanf(entry, "%x", &returnValue);
+	    /* sde changed x to lx */
+	    sscanf(entry, "%lx", &returnValue);
 	    break;
 	}
 	while (*p != 0) {
