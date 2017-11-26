@@ -26,6 +26,15 @@ static char rcsid[] = "$Header: /user6/ouster/wish/RCS/tkEvent.c,v 1.60 92/08/21
 #include <sys/time.h>
 #include <assert.h>
 
+/* sde added include for otherwise implicit function TkWmProtocolEventProc */
+#include "tkwm.h"
+/* sde added prototype for otherwise implicit function Tcl_CheckForSignal
+ * that has a call inserted in the tkucbsrc/ modified version of this file */
+/* #include "tclxtend.h" */ /* that's in /src/tclx/src which is not on path */
+EXTERN int
+Tcl_CheckForSignal _ANSI_ARGS_((Tcl_Interp *interp,
+                                int         cmdResultCode));
+
 
 /*
  * For each timer callback that's pending, there is one record
@@ -953,7 +962,8 @@ Tk_CreateTimerHandler(milliseconds, proc, clientData)
     timerPtr->proc = proc;
     timerPtr->clientData = clientData;
     id++;
-    timerPtr->token = (Tk_TimerToken) id;
+    /* sde added cast to intptr_t */
+    timerPtr->token = (Tk_TimerToken) (intptr_t) id;
 
     /*
      * Add the event to the queue in the correct position
@@ -1031,7 +1041,8 @@ Tk_CreateMicroTimerHandler(seconds, microseconds, proc, clientData)
     timerPtr->proc = proc;
     timerPtr->clientData = clientData;
     id++;
-    timerPtr->token = (Tk_TimerToken) id;
+    /* sde added cast to intptr_t */
+    timerPtr->token = (Tk_TimerToken) (intptr_t) id;
 
     /*
      * Add the event to the queue in the correct position
