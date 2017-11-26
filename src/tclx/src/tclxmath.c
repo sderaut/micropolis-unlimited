@@ -18,6 +18,9 @@
 
 #include "tclxint.h"
 
+/* sde include for time function */
+#include <time.h>
+
 extern int rand();
 
 /*
