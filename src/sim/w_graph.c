@@ -207,7 +207,8 @@ int GraphCmdconfigure(GRAPH_ARGS)
     result = ConfigureSimGraph(interp, graph, argc-2, argv+2,
 			    TK_CONFIG_ARGV_ONLY);
   }
-  return TCL_OK;
+  /* sde return otherwise unused result instead of TCL_OK */
+  return result;
 }
 
 
