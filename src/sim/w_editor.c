@@ -94,8 +94,7 @@ int EditorCmdconfigure(VIEW_ARGS)
     result = ConfigureTileView(interp, view, argc-2, argv+2,
 			       TK_CONFIG_ARGV_ONLY);
   }
-  /* sde return otherwise unused result instead of TCL_OK */
-  return result;
+  return TCL_OK;
 }
 
 

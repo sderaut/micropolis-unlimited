@@ -22,9 +22,6 @@ static char rcsid[] = "$Header: /user6/ouster/wish/RCS/tkOption.c,v 1.25 92/03/1
 #include "tkconfig.h"
 #include "tkint.h"
 
-/* sde prototype a read function like unistd.h since it's used implicitly */
-extern ssize_t  read _ANSI_ARGS_((int fd, void *buf, size_t numBytes));
-
 /*
  * The option database is stored as one tree for each main window.
  * Each name or class field in an option is associated with a node or

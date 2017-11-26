@@ -330,8 +330,8 @@ GenerateFileId (interp, filePath, fileId)
                           Tcl_UnixError (interp), (char *) NULL);
         return TCL_ERROR;
     }
-    /* sde change specifiers d to lu */
-    sprintf (fileId, "@%lu:%lu", statInfo.st_dev, statInfo.st_ino);
+
+    sprintf (fileId, "@%d:%d", statInfo.st_dev, statInfo.st_ino);
 
     return TCL_OK;
 }

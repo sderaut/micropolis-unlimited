@@ -1143,9 +1143,8 @@ Tcl_ParseVar(interp, string, termPtr)
 	    if (TclParseQuotes(interp, string+1, ')', 0, &end, &pv)
 		    != TCL_OK) {
 		char msg[100];
-		/* sde added cast to (int) for precision specifier */
 		sprintf(msg, "\n    (parsing index for array \"%.*s\")",
-			(int) (string - name1), name1);
+			string-name1, name1);
 		Tcl_AddErrorInfo(interp, msg);
 		result = NULL;
 		name2 = pv.buffer;

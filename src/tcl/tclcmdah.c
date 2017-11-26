@@ -119,8 +119,7 @@ Tcl_CaseCmd(dummy, interp, argc, argv)
     for (i = 0; i < caseArgc; i += 2) {
 	int patArgc, j;
 	char **patArgv;
-	/* sde removed 'register' */
-	char *p;
+	register char *p;
 
 	if (i == (caseArgc-1)) {
 	    interp->result = "extra case pattern with no body";
@@ -621,8 +620,7 @@ Tcl_FormatCmd(dummy, interp, argc, argv)
     int argc;				/* Number of arguments. */
     char **argv;			/* Argument strings. */
 {
-    /* sde removed 'register' */
-    char *format;	/* Used to read characters from the format
+    register char *format;	/* Used to read characters from the format
 				 * string. */
     char newFormat[40];		/* A new format specifier is generated here. */
     int width;			/* Field width from field specifier, or 0 if
@@ -632,11 +630,8 @@ Tcl_FormatCmd(dummy, interp, argc, argv)
     int size;			/* Number of bytes needed for result of
 				 * conversion, based on type of conversion
 				 * ("e", "s", etc.) and width from above. */
-    /* sde change from char *oneWordValue  to int oneWordValue
-     * and [new] char *oneWordLocation */
-    int oneWordValue = 0;	/* Used to hold value to pass to sprintf, if
+    char *oneWordValue = NULL;	/* Used to hold value to pass to sprintf, if
 				 * it's a one-word value. */
-    char *oneWordLocation = NULL;
     double twoWordValue;	/* Used to hold value to pass to sprintf if
 				 * it's a two-word value. */
     int useTwoWords;		/* 0 means use oneWordValue, 1 means use
@@ -675,8 +670,7 @@ Tcl_FormatCmd(dummy, interp, argc, argv)
     curArg = argv+2;
     argc -= 2;
     for (format = argv[1]; *format != 0; ) {
-	/* sde removed 'register' */
-	char *newPtr = newFormat;
+	register char *newPtr = newFormat;
 
 	width = precision = useTwoWords = noPercent = useShort = 0;
 
@@ -686,11 +680,10 @@ Tcl_FormatCmd(dummy, interp, argc, argv)
 	 */
 
 	if (*format != '%') {
-	    /* sde removed 'register' */
-	    char *p;
+	    register char *p;
 	    int bsSize;
-	    /* sde change from using oneWordValue to new oneWordLocation */
-	    oneWordLocation = p = format;
+
+	    oneWordValue = p = format;
 	    while ((*format != '%') && (*format != 0)) {
 		if (*format == '\\') {
 		    *p = Tcl_Backslash(format, &bsSize);
@@ -704,15 +697,13 @@ Tcl_FormatCmd(dummy, interp, argc, argv)
 		    format++;
 		}
 	    }
-	    /* sde change from oneWordValue to oneWordLocation */
-	    size = p - oneWordLocation;
+	    size = p - oneWordValue;
 	    noPercent = 1;
 	    goto doField;
 	}
 
 	if (format[1] == '%') {
-	    /* sde changed from oneWordValue to oneWordLocation */
-	    oneWordLocation = format;
+	    oneWordValue = format;
 	    size = 1;
 	    noPercent = 1;
 	    format += 2;
@@ -818,21 +809,18 @@ Tcl_FormatCmd(dummy, interp, argc, argv)
 	    case 'u':
 	    case 'x':
 	    case 'X':
-		/* sde cast &oneWordValue to (int *) no longer necessary */
-		if (Tcl_GetInt(interp, *curArg, &oneWordValue)
+		if (Tcl_GetInt(interp, *curArg, (int *) &oneWordValue)
 			!= TCL_OK) {
 		    goto fmtError;
 		}
 		size = 40;
 		break;
 	    case 's':
-		/* sde comment out unused and difficult cast assignment */
-		/* oneWordValue = *curArg; */
+		oneWordValue = *curArg;
 		size = strlen(*curArg);
 		break;
 	    case 'c':
-		/* sde cast &oneWordValue to (int *) no longer necessary */
-		if (Tcl_GetInt(interp, *curArg, &oneWordValue)
+		if (Tcl_GetInt(interp, *curArg, (int *) &oneWordValue)
 			!= TCL_OK) {
 		    goto fmtError;
 		}
@@ -891,16 +879,14 @@ Tcl_FormatCmd(dummy, interp, argc, argv)
 	    dstSpace = newSpace;
 	}
 	if (noPercent) {
-	    /* sde change from oneWordValue to oneWordLocation */
-	    memcpy((VOID *) (dst+dstSize), (VOID *) oneWordLocation, size);
+	    memcpy((VOID *) (dst+dstSize), (VOID *) oneWordValue, size);
 	    dstSize += size;
 	    dst[dstSize] = 0;
 	} else {
 	    if (useTwoWords) {
 		sprintf(dst+dstSize, newFormat, twoWordValue);
 	    } else if (useShort) {
-		/* sde removed cast to int */
-	        int tmp = oneWordValue;
+	        int tmp = (int)oneWordValue;
 		sprintf(dst+dstSize, newFormat, (short)tmp);
 	    } else {
 		sprintf(dst+dstSize, newFormat, oneWordValue);

@@ -1191,8 +1191,7 @@ FindSequence(interp, bindPtr, object, eventString, create, maskPtr)
 	    string[1] = 0;
 	    hPtr = Tcl_FindHashEntry(&keySymTable, string);
 	    if (hPtr != NULL) {
-		/* sde added cast to (intptr_t) */
-		patPtr->detail = (int) (intptr_t) Tcl_GetHashValue(hPtr);
+		patPtr->detail = (int) Tcl_GetHashValue(hPtr);
 	    } else {
 		if (isprint(*p)) {
 		    patPtr->detail = *p;
@@ -1305,8 +1304,7 @@ FindSequence(interp, bindPtr, object, eventString, create, maskPtr)
 			    "\" for non-key event", (char *) NULL);
 		    return NULL;
 		}
-		/* sde added cast to (intptr_t) */
-		patPtr->detail = (int) (intptr_t) Tcl_GetHashValue(hPtr);
+		patPtr->detail = (int) Tcl_GetHashValue(hPtr);
 
 		/*
 		 * Don't get upset about the shift modifier with keys:
@@ -1660,8 +1658,7 @@ MatchPatterns(dispPtr, bindPtr, psPtr)
 				if (*codePtr == 0) {
 					continue;
 				}
-				/* sde replace deprecated by adding "kb" and ",0" */
-				keysym = XkbKeycodeToKeysym(dispPtr->display, *codePtr, 0, 0);
+				keysym = XKeycodeToKeysym(dispPtr->display, *codePtr, 0);
 				if (keysym == XK_Mode_switch) {
 					dispPtr->modeModMask |= ShiftMask << (i/modMapPtr->max_keypermod);
 				}
@@ -2077,7 +2074,7 @@ ExpandPercents(before, eventPtr, keySym, after, afterSize)
 		number = eventPtr->xcreatewindow.border_width;
 		goto doNumber;
 	    case 'D':
-		number = (int) (intptr_t) eventPtr->xany.display;
+		number = (int) eventPtr->xany.display;
 		goto doNumber;
 	    case 'E':
 		number = (int) eventPtr->xany.send_event;

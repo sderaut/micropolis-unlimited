@@ -256,8 +256,7 @@ int DateCmdconfigure(DATE_ARGS)
     result = ConfigureSimDate(interp, date, argc-2, argv+2,
 			    TK_CONFIG_ARGV_ONLY);
   }
-  /* sde return otherwise unused result instead of TCL_OK */
-  return result;
+  return TCL_OK;
 }
 
 
@@ -602,8 +601,7 @@ DoUpdateDate(SimDate *date)
   Pixmap pm;
   int *pix;
   int w, h, x, y;
-  /* sde comment out unused tx, ty */
-  /* int tx, ty; */
+  int tx, ty;
 
   if (!date->visible) {
     return;
@@ -630,8 +628,8 @@ DoUpdateDate(SimDate *date)
 #endif
 
   XFillRectangle(dpy, pm, gc, 0, 0, w, h);
-  /* sde comment out unused tx, ty */
-  /* tx = BORDER; ty = BORDER; */
+
+  tx = BORDER; ty = BORDER;
 
   if ((w -= (2 * BORDER)) < 1) w = 1;
   if ((h -= (2 * BORDER)) < 1) h = 1;

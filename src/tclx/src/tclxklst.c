@@ -157,8 +157,7 @@ SplitAndFindField (interp, fieldName, keyedList, fieldInfoPtr)
 {
     int  idx, result;
 
-    /* sde new compiler warning on '\0' in place of NULL, so test for both */
-    if (fieldName == NULL || fieldName [0] == '\0') {
+    if (fieldName == '\0') {
         interp->result = "null key not allowed";
         return TCL_ERROR;
     }
@@ -341,8 +340,7 @@ Tcl_GetKeyedListField (interp, fieldName, keyedList, fieldValuePtr)
     char *nameSeparPtr, *scanPtr, *valuePtr;
     int   valueSize, result;
 
-    /* sde new compiler warning on '\0' in place of NULL, so test for both */
-    if (fieldName == NULL || fieldName [0] == '\0') {
+    if (fieldName == '\0') {
         interp->result = "null key not allowed";
         return TCL_ERROR;
     }
@@ -692,9 +690,7 @@ Tcl_KeylgetCmd (clientData, interp, argc, argv)
     /*
      * Handle retrieving a value for a specified key.
      */
-
-    /* sde new compiler warning on '\0' in place of NULL, so test for both */
-    if (argv [2] == NULL || argv [2][0] == '\0') {
+    if (argv [2] == '\0') {
         interp->result = "null key not allowed";
         return TCL_ERROR;
     }

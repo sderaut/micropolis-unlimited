@@ -28,20 +28,16 @@
 #
 
 CC		= gcc
-# sde experimentally added FT2_DIR
-# CFLAGS		= -I. -I$(XINCLUDE) -I$(FT2_DIR) -I$(TCL_DIR) -O3 -DTK_VERSION=\"2.3\" -DUSE_XPM3 -DUSE_XFT2 -DIS_LINUX
-CFLAGS		= -I. -I$(XINCLUDE) -I$(TCL_DIR) -g -DTK_VERSION=\"2.3\" -DUSE_XPM3 -DIS_LINUX
+
+CFLAGS		= -I. -I$(XINCLUDE) -I$(TCL_DIR) -O3 -DTK_VERSION=\"2.3\" -DUSE_XPM3 -DIS_LINUX
+#CFLAGS		= -I. -I$(XINCLUDE) -I$(TCL_DIR) -g -DTK_VERSION=\"2.3\" -DUSE_XPM3 -DIS_LINUX
 
 TCL_DIR		= ../tcl
 XINCLUDE	= /usr/include/X11
-# sde from output of pkg-config, added freetype2
-# FT2_DIR		= /usr/include/freetype2
 XLIB		= -L/usr/X11R6/lib -lX11 -lXpm
-# sde added -lXft
-# XLIB		= -L/usr/X11R6/lib -lX11 -lXpm -lXft
 
 LIBS = libtk.a $(TCL_DIR)/libtcl.a
-LINKS = $(LIBS)
+LINKS = $(LIBS) 
 
 WIDGOBJS = \
 	tkbutton.o \

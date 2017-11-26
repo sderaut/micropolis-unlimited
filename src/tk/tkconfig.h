@@ -59,12 +59,6 @@
 #include <X11/Xresource.h>
 #include <X11/Xutil.h>
 
-/* sde, for changing 
- * XKeycodeToKeysym(display_, key_code, 0);
- * to
- * XkbKeycodeToKeysym(display_, key_code, 0, 0); */
-#include <X11/XKBlib.h>
-
 /*
  * Macro to use instead of "void" for arguments that must have
  * type "void *" in ANSI C;  maps them to type "char *" in

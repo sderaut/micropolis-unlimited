@@ -268,8 +268,7 @@ DoGlob(interp, dir, rem)
 	struct dirent *entryPtr;
 	int l1, l2;
 	char *pattern, *newDir, *dirName;
-        /* sde prevent compiler warning there isn't room by inserting 2*_+2 */
-	char static1[2 * STATIC_SIZE + 2], static2[STATIC_SIZE];
+	char static1[STATIC_SIZE], static2[STATIC_SIZE];
 	struct stat statBuf;
 
 	/*
@@ -367,8 +366,7 @@ DoGlob(interp, dir, rem)
 	} else {
 	    newDir = (char *) ckalloc((unsigned) l2);
 	}
-	/* sde cast to (int) of precision specifier */
-	sprintf(newDir, "%s%s%.*s", dir, separator, (int) (p-rem), rem);
+	sprintf(newDir, "%s%s%.*s", dir, separator, p-rem, rem);
 	result = DoGlob(interp, newDir, p+1);
 	if (newDir != static1) {
 	    ckfree(newDir);

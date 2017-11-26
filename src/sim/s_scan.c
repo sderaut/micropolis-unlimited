@@ -205,22 +205,22 @@ PTLScan(void)   	/* Does pollution, terrain, land value   */
 	    }
 	    Plevel += GetPValue(loc);
 	    if (loc >= ROADBASE)
-	        LVflag++;
+	      LVflag++;
 	  }
 	}
-
-      /* XXX ??? -- sde removed comment out of following if */
+/* XXX ???
       if (Plevel < 0)
-	    Plevel = 0; /* sde changed from 250 to 0 */
+	Plevel = 250;
+*/
       if (Plevel > 255)
-	    Plevel = 255;
+	Plevel = 255;
       tem[x][y] = Plevel;
       if (LVflag) {			/* LandValue Equation */
 	dis = 34 - GetDisCC(x, y);
 	dis = dis <<2;
 	dis += (TerrainMem[x >>1][y >>1] );
 	dis -= (PollutionMem[x][y]);
-	if (CrimeMem[x][y] > 190) dis -= 30; /* sde was -= 20, suggested 40 */
+	if (CrimeMem[x][y] > 190) dis -= 20;
 	if (dis > 250) dis = 250;
 	if (dis < 1) dis = 1;
 	LandValueMem[x][y] = dis;

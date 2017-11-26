@@ -560,8 +560,7 @@ Tk_NameOfCursor(cursor)
 
     if (!initialized) {
 	printid:
-	/* sde changed 'x' to 'lx' */
-	sprintf(string, "cursor id 0x%lx", cursor);
+	sprintf(string, "cursor id 0x%x", cursor);
 	return string;
     }
     idHashPtr = Tcl_FindHashEntry(&idTable, (char *) cursor);
