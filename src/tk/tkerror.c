@@ -23,7 +23,8 @@ static char rcsid[] = "$Header: /user6/ouster/wish/RCS/tkError.c,v 1.10 92/04/12
 #include "tkconfig.h"
 #include "tkint.h"
 
-static initialized = 0;
+/* sde added int */
+static int initialized = 0;
 
 /*
  * Forward references to procedures declared later in this file:
