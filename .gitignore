@@ -21,3 +21,4 @@ __init__.py
 *.bak
 [A-Z]*.cty
 build*.txt
+*.output
