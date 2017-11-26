@@ -886,7 +886,9 @@ Tcl_FormatCmd(dummy, interp, argc, argv)
 	    if (useTwoWords) {
 		sprintf(dst+dstSize, newFormat, twoWordValue);
 	    } else if (useShort) {
-	        int tmp = (int)oneWordValue;
+		/* sde warning was "cast from pointer to integer of different size" */
+		/* int tmp = (int)oneWordValue; */
+		int tmp = (int) (intptr_t) oneWordValue;
 		sprintf(dst+dstSize, newFormat, (short)tmp);
 	    } else {
 		sprintf(dst+dstSize, newFormat, oneWordValue);
